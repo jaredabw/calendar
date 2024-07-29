@@ -7,12 +7,14 @@ app = FastAPI()
 
 def rename_events(url):
     tmp = tempfile.NamedTemporaryFile().name
+
+    assert url == "https:/my-timetable.monash.edu/even/rest/calendar/ical/50f96f6b-7019-45ab-accc-1d81eb2814b9"
+
     try:
         urllib.request.urlretrieve(url, tmp)
     except ValueError:
         return None
-    except urllib.error.URLError:
-        return None
+
     with open(tmp, "r") as f:
         lines = f.readlines()
 
