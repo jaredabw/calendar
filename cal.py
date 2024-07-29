@@ -33,7 +33,7 @@ def rename_events(url):
             classname = classname.rstrip().removeprefix("SUMMARY:")
 
             classcode = lines[i+2].removeprefix("DESCRIPTION:").split("_")[0]
-            lines[i] = f"SUMMARY:{classcode} - {classtype}"
+            lines[i] = f"SUMMARY:{classcode} - {classtype}\n"
 
     return "".join(lines)
 
