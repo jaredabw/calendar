@@ -3,6 +3,7 @@ import urllib.error
 import tempfile
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
+from typing import Union
 
 app = FastAPI()
 
@@ -38,8 +39,12 @@ def rename_events(url):
     return "".join(lines)
 
 @app.get("/", response_class=HTMLResponse)
-def read_root():
-    return """
+def read_root(url: str = None, format: str = None):
+    if url is not None:
+        footer = f"""<p>edit-calendar.vercel.app/e?url={url}&format={format}</p>"""
+    else:
+        footer = ""
+    return f"""
     <html>
         <head>
             <title>Allocate+ Calendar Renamer</title>
@@ -48,13 +53,19 @@ def read_root():
             <h1>Allocate+ Calendar Renamer</h1>
             <p>Have you ever wanted to add your Allocate+ classes to your Google Calendar, but been annoyed by the weird names of the classes?</p>
             <p>To receive a link with renamed clases, you can simply add "edit-calendar.vercel.app/" in front of the URL.</p>
+            <form action="/">
+                <label for="url">Enter URL:</label>
+                <input type="text" id="url" name="url">
+                <input type="submit" value="Submit">
+            </form>
+            {footer}
         </body>
-    """
+    """ # checkboxes for formats: course code, name and type, capitalised or not, order?
 
-@app.get("/{init_url:path}")
-def read_item(init_url: str = None):
-    init_url = init_url.removeprefix("https://").removeprefix("https:/").removeprefix("http://").removeprefix("http:/")
-    content = rename_events(init_url)
+@app.get("/e")
+def read_item(url: str = None, format: str = None):
+    url = url.removeprefix("https://").removeprefix("https:/").removeprefix("http://").removeprefix("http:/")
+    content = rename_events(url)
     if content is None:
         return Response(content="File not found", media_type="text/plain")
 
