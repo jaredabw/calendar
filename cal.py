@@ -2,6 +2,7 @@ import urllib.request
 import urllib.error
 import tempfile
 from fastapi import FastAPI, Response
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
@@ -36,9 +37,19 @@ def rename_events(url):
 
     return "".join(lines)
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def read_root():
-    return {"message": "Hello World!"}
+    return """
+    <html>
+        <head>
+            <title>Allocate+ Calendar Renamer</title>
+        </head>
+        <body>
+            <h1>Allocate+ Calendar Renamer</h1>
+            <p>Have you ever wanted to add your Allocate+ classes to your Google Calendar, but been annoyed by the weird names of the classes?</p>
+            <p>To receive a link with renamed clases, you can simply add "edit-calendar.vercel.app/" in front of the URL.</p>
+        </body>
+    """
 
 @app.get("/{init_url:path}")
 def read_item(init_url: str = None):
