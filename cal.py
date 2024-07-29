@@ -52,7 +52,6 @@ def read_root(url: str = None, format: str = None):
         <body>
             <h1>Allocate+ Calendar Renamer</h1>
             <p>Have you ever wanted to add your Allocate+ classes to your Google Calendar, but been annoyed by the weird names of the classes?</p>
-            <p>To receive a link with renamed clases, you can simply add "edit-calendar.vercel.app/" in front of the URL.</p>
             <form action="/">
                 <label for="url">Enter URL:</label>
                 <input type="text" id="url" name="url">
