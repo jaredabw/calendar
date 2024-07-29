@@ -1,4 +1,5 @@
 import urllib.request
+import urllib.error
 import tempfile
 from fastapi import FastAPI, Response
 
@@ -9,6 +10,8 @@ def rename_events(url):
     try:
         urllib.request.urlretrieve(url, tmp)
     except ValueError:
+        return None
+    except urllib.error.URLError:
         return None
     with open(tmp, "r") as f:
         lines = f.readlines()
