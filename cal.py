@@ -8,11 +8,12 @@ app = FastAPI()
 def rename_events(url):
     tmp = tempfile.NamedTemporaryFile().name
 
-    assert url == "https:/my-timetable.monash.edu/even/rest/calendar/ical/50f96f6b-7019-45ab-accc-1d81eb2814b9"
+    url = f"https://{url}"
 
     try:
         urllib.request.urlretrieve(url, tmp)
     except ValueError:
+        print("Invalid URL")
         return None
 
     with open(tmp, "r") as f:
@@ -40,7 +41,8 @@ def read_root():
     return {"message": "Hello World!"}
 
 @app.get("/{init_url:path}")
-def read_item(init_url = None):
+def read_item(init_url: str = None):
+    init_url = init_url.removeprefix("https://").removeprefix("https:/").removeprefix("http://").removeprefix("http:/")
     content = rename_events(init_url)
     if content is None:
         return Response(content="File not found", media_type="text/plain")
