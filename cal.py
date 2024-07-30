@@ -86,7 +86,9 @@ def read_root(url: str = None, ccode: str = None, cname: str = None, ctype: str 
             footer = f"""
             <p>Example:</p>
             <p>{gen_summary("FUND ALG", "Workshop", "FIT1008", form).removeprefix("SUMMARY:")}</p>
+            <p>URL:</p>
             <p>{root}e?url={url}&f={form}</p>
+            <p>Copy the URL above and paste it into your calendar.</p>
             """
             url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url
         else:
