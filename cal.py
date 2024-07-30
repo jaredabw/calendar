@@ -39,9 +39,13 @@ def rename_events(url):
     return "".join(lines)
 
 @app.get("/", response_class=HTMLResponse)
-def read_root(url: str = None, format: str = None):
+def read_root(url: str = None, ccode: str = None, cname: str = None, ctype: str = None, caps: str = None):
+    if ccode is None: ccode = "0"
+    if cname is None: cname = "0"
+    if ctype is None: ctype = "0"
+    if caps is None: caps = "0"
     if url is not None:
-        footer = f"""<p>edit-calendar.vercel.app/e?url={url}&format={format}</p>"""
+        footer = f"<p>edit-calendar.vercel.app/e?url={url}&f={ccode}&c={caps}</p>"
     else:
         footer = ""
     return f"""
@@ -54,7 +58,15 @@ def read_root(url: str = None, format: str = None):
             <p>Have you ever wanted to add your Allocate+ classes to your Google Calendar, but been annoyed by the weird names of the classes?</p>
             <form action="/">
                 <label for="url">Enter URL:</label>
-                <input type="text" id="url" name="url">
+                <input type="text" id="url" name="url"><br>
+                <label for="code">Display class code?</label>
+                <input type="checkbox" id="ccode" name="ccode" value="1"><br>
+                <label for="name">Display class name?</label>
+                <input type="checkbox" id="cname" name="cname" value="1"><br>
+                <label for="type">Display class type?</label>
+                <input type="checkbox" id="ctype" name="ctype" value="1"><br>
+                <label for="caps">Capitalise all words?</label>
+                <input type="checkbox" id="caps" name="caps" value="1"><br>
                 <input type="submit" value="Submit">
             </form>
             {footer}
