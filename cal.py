@@ -88,6 +88,7 @@ def read_root(url: str = None, ccode: str = None, cname: str = None, ctype: str 
             <p>{gen_summary("FUND ALG", "Workshop", "FIT1008", form).removeprefix("SUMMARY:")}</p>
             <p>{root}e?url={url}&f={form}</p>
             """
+            url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url
         else:
             footer = "<p>Please enter the URL given under 'Subscribe to your timetable' on the Allocate+ homepage."
     elif url != "":
