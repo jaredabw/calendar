@@ -59,7 +59,7 @@ def rename_events(url, form: int):
     return "".join(lines)
 
 @app.get("/", response_class=HTMLResponse)
-def read_root(url: str = None, ccode: str = None, cname: str = None, ctype: str = None, caps: str = None):
+def read_root(url: str = None, ccode: str | None = None, cname: str | None = None, ctype: str | None = None, caps: str | None = None):
     if ccode is None: ccode = "0"
     if cname is None: cname = "0"
     if ctype is None: ctype = "0"
