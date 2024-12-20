@@ -81,7 +81,7 @@ def read_root(url: str = None, ccode: str | None = None, cname: str | None = Non
     url = url.removeprefix("https://").removeprefix("https:/").removeprefix("http://").removeprefix("http:/")
 
     if "my-timetable.monash.edu" in url:
-        if "my-timetable.monash.edu/even/rest/calendar/ical" in url:
+        if "my-timetable.monash.edu/even/rest/calendar/ical" in url or "my-timetable.monash.edu/odd/rest/calendar/ical" in url:
             url = url.removeprefix("my-timetable.monash.edu/even/rest/calendar/ical/")
             footer = f"""
             <p>Example:</p>
