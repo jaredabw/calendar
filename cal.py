@@ -81,8 +81,14 @@ def read_root(url: str = None, ccode: str | None = None, cname: str | None = Non
     url = url.removeprefix("https://").removeprefix("https:/").removeprefix("http://").removeprefix("http:/")
 
     if "my-timetable.monash.edu" in url:
-        if "my-timetable.monash.edu/even/rest/calendar/ical" in url or "my-timetable.monash.edu/odd/rest/calendar/ical" in url:
-            url = url.removeprefix("my-timetable.monash.edu/even/rest/calendar/ical/")
+        even = None
+        if "my-timetable.monash.edu/even/rest/calendar/ical" in url:
+            even = True
+        if "my-timetable.monash.edu/odd/rest/calendar/ical" in url:
+            even = False
+
+        if even is not None:
+            url = url.removeprefix("my-timetable.monash.edu/even/rest/calendar/ical/") if even else url.removeprefix("my-timetable.monash.edu/odd/rest/calendar/ical/")
             footer = f"""
             <p>Example:</p>
             <p>{gen_summary("FUND ALGOR", "Workshop", "FIT1008", form).removeprefix("SUMMARY:")}</p>
@@ -90,7 +96,7 @@ def read_root(url: str = None, ccode: str | None = None, cname: str | None = Non
             <p>{root}e?url={url}&f={form}</p>
             <p>Copy the URL above and paste it into your calendar.</p>
             """
-            url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url
+            url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url if even else "https://my-timetable.monash.edu/odd/rest/calendar/ical/" + url
         else:
             footer = "<p>Please enter the URL given under 'Subscribe to your timetable' on the Allocate+ homepage."
     elif url != "":
