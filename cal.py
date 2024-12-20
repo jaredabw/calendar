@@ -89,11 +89,12 @@ def read_root(url: str = None, ccode: str | None = None, cname: str | None = Non
 
         if even is not None:
             url = url.removeprefix("my-timetable.monash.edu/even/rest/calendar/ical/") if even else url.removeprefix("my-timetable.monash.edu/odd/rest/calendar/ical/")
+            e = "1" if even else "0"
             footer = f"""
             <p>Example:</p>
             <p>{gen_summary("FUND ALGOR", "Workshop", "FIT1008", form).removeprefix("SUMMARY:")}</p>
             <p>URL:</p>
-            <p>{root}e?url={url}&f={form}</p>
+            <p>{root}e?url={url}&f={form}&e={e}</p>
             <p>Copy the URL above and paste it into your calendar.</p>
             """
             url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url if even else "https://my-timetable.monash.edu/odd/rest/calendar/ical/" + url
@@ -132,9 +133,10 @@ def read_root(url: str = None, ccode: str | None = None, cname: str | None = Non
     """
 
 @app.get("/e")
-def read_item(url: str = None, f: str = None):
-    url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url
+def read_item(url: str = None, f: str = None, e: str = None):
+    e = bool(int(e)) if e is not None else False
 
+    url = "https://my-timetable.monash.edu/even/rest/calendar/ical/" + url if e else "https://my-timetable.monash.edu/odd/rest/calendar/ical/" + url
     f = int(f) if f is not None else 0
     try:
         content = rename_events(url, form=f)
