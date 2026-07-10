@@ -48,7 +48,9 @@ def rename_events(url, form: int):
             return None
 
         if line.startswith("SUMMARY:"):
-            classname, classtype = line.split("\\, ")
+            if "\\, " not in line:
+                continue
+            classname, classtype = line.split("\\, ", 1)
             classtype = classtype.rstrip().removesuffix("-JTU")
             classname = classname.rstrip().removeprefix("SUMMARY:")
 
@@ -141,7 +143,7 @@ def read_item(url: str = None, f: str = None, e: str = None):
     try:
         content = rename_events(url, form=f)
     except Exception as e:
-        return Response(content=e, media_type="text/plain")
+        return Response(content=str(e), media_type="text/plain")
 
     if content is None:
         return Response(content="File not found", media_type="text/plain")
